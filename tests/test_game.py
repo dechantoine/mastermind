@@ -1,5 +1,5 @@
 import unittest
-from src.game import MasterMind, generate_code, check_code
+from src.game import MasterMind, generate_code, check_code, check_guess_against_rounds
 
 
 class TestMasterMind(unittest.TestCase):
@@ -144,3 +144,21 @@ class TestMasterMind(unittest.TestCase):
         rounds = game(guess)
         self.assertEqual(len(rounds), 3)
         self.assertNotIn(4, rounds)
+
+    def test_check_guess_against_rounds(self):
+        game = MasterMind(n_colors=6, len_code=4, n_rounds=3)
+        game.code = [1, 2, 3, 4]
+
+        guesses = [[1, 4, 0, 2], [0, 4, 2, 1], [3, 4, 1, 0]]
+        for guess in guesses:
+            rounds = game(guess)
+
+        false_check = check_guess_against_rounds(guess=[5, 5, 0, 2],
+                                                 rounds=rounds)
+
+        self.assertFalse(false_check)
+
+        true_check = check_guess_against_rounds(guess=[2, 1, 0, 3],
+                                                rounds=rounds)
+
+        self.assertTrue(true_check)

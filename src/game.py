@@ -90,6 +90,21 @@ def check_code(guess: list[int], code: list[int]) -> tuple[int, int]:
     return right_positions, wrong_positions
 
 
+def check_guess_against_rounds(guess: list[int], rounds: dict) -> bool:
+    """
+    Check the guess against a stack of rounds.
+
+    Args:
+        guess (list[int]): the guess
+        rounds (dict): the stack of rounds
+
+    Returns:
+        bool: whether the guess is compatible with the stack of rounds
+    """
+    return all(check_code(guess=round_["guess"], code=guess) == (round_["right_positions"], round_["wrong_positions"])
+               for round_ in rounds.values())
+
+
 class MasterMind:
     def __init__(self,
                  n_colors: int = 8,
